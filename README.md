@@ -1,8 +1,8 @@
 # retell-sdk (Rust)
 
-Idiomatic, asynchronous Rust SDK for the [Retell AI](https://www.retellai.com/) REST API.
+Asynchronous Rust client for the [Retell AI](https://www.retellai.com/) REST API.
 
-Built with **reqwest** (async HTTP) and **serde** (JSON). The public surface mirrors the official Node/Python SDKs: a main `RetellClient` plus modular sub-clients such as `client.agent()` and `client.call()`.
+Built with **reqwest** (async HTTP) and **serde** (JSON). The API surface is modeled after Retell’s Node/Python SDKs: a main `RetellClient` plus modular sub-clients such as `client.agent()` and `client.call()`.
 
 > Spec revision: based on [docs.retellai.com/openapi.yaml](https://docs.retellai.com/openapi.yaml) (API v3).
 
@@ -21,13 +21,17 @@ Add to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-retell-sdk = { git = "https://github.com/YOUR_ORG/retell-sdk-rust" }
-# or, once published:
-# retell-sdk = "0.1"
+retell-sdk = "0.1"
 tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
 ```
 
-For a local path dependency while developing:
+From git (unreleased main):
+
+```toml
+retell-sdk = { git = "https://github.com/antoniodds/retell-sdk-rust" }
+```
+
+Local path while developing:
 
 ```toml
 retell-sdk = { path = "../retell-sdk-rust" }
@@ -36,7 +40,6 @@ retell-sdk = { path = "../retell-sdk-rust" }
 ## Configure
 
 1. Create a free Retell account at [dashboard.retellai.com](https://dashboard.retellai.com/)  
-   New workspaces get **$10 trial credits** (no card required for web-call / dashboard testing).
 2. Open **Settings → API Keys** and create a key.
 3. Export it (never commit keys):
 
@@ -167,9 +170,14 @@ match client.agent().get("agent_missing").await {
 export RETELL_API_KEY=key_...
 cargo run --example list_voices
 cargo run --example list_agents
+cargo run --example create_agent   # prints agent_id; creates LLM + voice agent
 
 export RETELL_AGENT_ID=agent_...
 cargo run --example create_web_call
+
+# Web-call roleplay: agent books dinner for 4; you play restaurant reception
+cargo run --example create_web_call_book_restaurant
+# Join within ~30s with the printed access_token via the Retell Web SDK
 ```
 
 ## Testing

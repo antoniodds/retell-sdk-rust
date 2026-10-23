@@ -3,15 +3,16 @@ name = "retell-sdk"
 version = "0.1.0"
 edition = "2021"
 rust-version = "1.75"
-authors = ["Retell SDK Contributors"]
-description = "Idiomatic asynchronous Rust SDK for the Retell AI API"
+authors = ["antoniodds"]
+description = "Asynchronous Rust client for the Retell AI API"
 license = "Apache-2.0"
-repository = "https://github.com/kelvin/retell-sdk-rust"
+homepage = "https://github.com/antoniodds/retell-sdk-rust"
+repository = "https://github.com/antoniodds/retell-sdk-rust"
 documentation = "https://docs.rs/retell-sdk"
 readme = "README.md"
 keywords = ["retell", "ai", "voice", "telephony", "sdk"]
 categories = ["api-bindings", "asynchronous"]
-exclude = ["openapi.yaml", "scripts/", ".venv/"]
+exclude = ["openapi.yaml", "scripts/", ".venv/", "demos/"]
 
 [dependencies]
 reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls", "multipart"] }
@@ -35,9 +36,17 @@ name = "list_agents"
 path = "examples/list_agents.rs"
 
 [[example]]
+name = "create_agent"
+path = "examples/create_agent.rs"
+
+[[example]]
 name = "create_web_call"
 path = "examples/create_web_call.rs"
 
 [[example]]
 name = "list_voices"
 path = "examples/list_voices.rs"
+
+[[example]]
+name = "create_web_call_book_restaurant"
+path = "examples/create_web_call_book_restaurant.rs"

@@ -85,6 +85,11 @@ impl CreateWebCallParams {
         self.retell_llm_dynamic_variables = Some(vars);
         self
     }
+
+    pub fn metadata(mut self, metadata: JsonObject) -> Self {
+        self.metadata = Some(metadata);
+        self
+    }
 }
 
 /// `POST /v2/register-phone-call`

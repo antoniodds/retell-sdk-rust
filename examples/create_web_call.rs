@@ -1,7 +1,8 @@
-//! Create a web call access token for browser testing.
+//! Create a web call and print connection details.
 //!
-//! Free to try — no phone number required. Use the returned `access_token` with
-//! Retell's web client / WebRTC stack.
+//! Free to try — no phone number required. Join within ~30 seconds using the
+//! returned `access_token` with the [Retell Web SDK](https://docs.retellai.com/deploy/web-call)
+//! (`RetellWebClient.startCall({ accessToken, callId, transport, iceServers })`).
 //!
 //! ```sh
 //! export RETELL_API_KEY=key_...
@@ -11,6 +12,7 @@
 
 use retell_sdk::types::CreateWebCallParams;
 use retell_sdk::RetellClient;
+use serde_json::json;
 
 #[tokio::main]
 async fn main() -> retell_sdk::Result<()> {
@@ -23,10 +25,36 @@ async fn main() -> retell_sdk::Result<()> {
         .create_web_call(&CreateWebCallParams::new(agent_id))
         .await?;
 
-    println!("call_id:      {}", call.call_id);
-    println!("transport:   {}", call.transport);
-    println!("expires_at:  {}", call.expires_at);
-    println!("access_token (truncate): {}…", &call.access_token[..call.access_token.len().min(32)]);
-    println!("ice_servers: {}", call.ice_servers.len());
+    let ice_servers: Vec<_> = call
+        .ice_servers
+        .iter()
+        .map(|s| {
+            let urls = match &s.urls {
+                retell_sdk::types::IceUrls::One(u) => json!(u),
+                retell_sdk::types::IceUrls::Many(u) => json!(u),
+            };
+            let mut obj = json!({ "urls": urls });
+            if let Some(u) = &s.username {
+                obj["username"] = json!(u);
+            }
+            if let Some(c) = &s.credential {
+                obj["credential"] = json!(c);
+            }
+            obj
+        })
+        .collect();
+
+    println!(
+        "{}",
+        serde_json::to_string_pretty(&json!({
+            "call_id": call.call_id,
+            "access_token": call.access_token,
+            "transport": call.transport,
+            "expires_at": call.expires_at,
+            "ice_servers": ice_servers,
+        }))
+        .unwrap()
+    );
+
     Ok(())
 }

@@ -1,4 +1,4 @@
-//! Error types returned by the Retell SDK.
+//! Error types returned by this client.
 
 use reqwest::StatusCode;
 use serde::Deserialize;

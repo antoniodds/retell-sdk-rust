@@ -35,6 +35,11 @@ impl CreateRetellLlmParams {
         self.begin_message = Some(message.into());
         self
     }
+
+    pub fn general_tools(mut self, tools: Vec<Value>) -> Self {
+        self.general_tools = Some(tools);
+        self
+    }
 }
 
 #[derive(Debug, Clone, Default, Serialize)]

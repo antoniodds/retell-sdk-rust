@@ -1,6 +1,6 @@
 //! # retell-sdk
 //!
-//! Idiomatic asynchronous Rust client for the [Retell AI](https://www.retellai.com/) API.
+//! Asynchronous Rust client for the [Retell AI](https://www.retellai.com/) API.
 //!
 //! ## Quick start
 //!
