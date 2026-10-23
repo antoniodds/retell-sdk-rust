@@ -1,0 +1,43 @@
+[package]
+name = "retell-sdk"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.75"
+authors = ["Retell SDK Contributors"]
+description = "Idiomatic asynchronous Rust SDK for the Retell AI API"
+license = "Apache-2.0"
+repository = "https://github.com/kelvin/retell-sdk-rust"
+documentation = "https://docs.rs/retell-sdk"
+readme = "README.md"
+keywords = ["retell", "ai", "voice", "telephony", "sdk"]
+categories = ["api-bindings", "asynchronous"]
+exclude = ["openapi.yaml", "scripts/", ".venv/"]
+
+[dependencies]
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls", "multipart"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "time"] }
+
+[dev-dependencies]
+wiremock = "0.6"
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "time"] }
+serde_json = "1"
+
+[features]
+default = []
+# Enable to run live API tests: cargo test --features live-tests -- --ignored
+live-tests = []
+
+[[example]]
+name = "list_agents"
+path = "examples/list_agents.rs"
+
+[[example]]
+name = "create_web_call"
+path = "examples/create_web_call.rs"
+
+[[example]]
+name = "list_voices"
+path = "examples/list_voices.rs"
